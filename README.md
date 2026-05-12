@@ -22,6 +22,8 @@ cd 52000
 2. Instalar dependencias:
 npm install
 
+---
+
 ## Ejecución
 
 1. Escribir con "input.txt" (Ver abajo)
@@ -32,41 +34,46 @@ node index.js
 
 ### Entrada válida (input1.txt)
 
+```
 do{
     puts("hola");
     puts("chau");
     puts("bien");
     break;
 }while(0);
-
+```
 
 ### Entrada válida (input2.txt)
 
+```
 do{
     puts("sol");
     puts("luna");
     break;
 }while(1);
-
+```
 
 ### Entrada con error (input3.txt)
 
+```
 do{
     puts("sol");
     break;
 }
-
+```
 
 ### Entrada con error (input4.txt)
 
+```
 do{
     puts("hola");
 }while(0);
-
+```
+---
 
 ## Estructura del proyecto
 
-
+```
 ├── Calculator.g4                  
 ├── CustomCalculatorVisitor.js     
 ├── index.js                    
@@ -81,4 +88,4 @@ do{
 │   ├── CalculatorListener.js
 │   └── CalculatorVisitor.js
 └── README.md
-
+```
