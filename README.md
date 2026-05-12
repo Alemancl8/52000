@@ -1,9 +1,6 @@
 # Analizador de Sub-lenguaje C con ANTLR4 y JavaScript
 
 **Materia:** Sintaxis y Semántica de Lenguajes de Programación  
-**Tema:** 39568_10  
-
----
 
 ## Descripción
 
@@ -14,95 +11,71 @@ Analizador léxico y sintáctico de un sub-lenguaje de C, construido con ANTLR4 
 3. **Árbol de análisis sintáctico**: muestra el árbol de análisis sintáctico concreto en formato de texto.
 4. **Interpretación**: traduce el código fuente al lenguaje JavaScript y lo ejecuta.
 
----
-
-## Requisitos previos
-
-- Java 1.8 o superior
-- Node.js 16 o superior
-- Visual Studio Code (recomendado)
-
----
 
 ## Instalación
 
-1. Clonar el repositorio:
-```
-git clone https://github.com/TU_USUARIO/54261.git
-cd 54261
-```
+1. Repositorio para clonar:
+
+git clone https://github.com/Alemancl8/52000.git
+cd 52000
 
 2. Instalar dependencias:
-```
 npm install
-```
-
----
 
 ## Ejecución
 
-1. Escribir el código fuente en el archivo `input.txt` (ver ejemplos abajo)
+1. Escribir con "input.txt" (Ver abajo)
 2. Ejecutar el analizador:
-```
 node index.js
-```
 
----
+### Ejemplos de entrada
 
-## Ejemplos de entrada
+### Entrada válida (input1.txt)
 
-### Entrada válida 1 (input1.txt)
-```
 do{
     puts("hola");
     puts("chau");
     puts("bien");
     break;
 }while(0);
-```
-**Salida esperada:** Entrada válida, tabla de lexemas, árbol y traducción a JavaScript.
 
-### Entrada válida 2 (input2.txt)
-```
+
+### Entrada válida (input2.txt)
+
 do{
     puts("sol");
     puts("luna");
     break;
 }while(1);
-```
-**Salida esperada:** Entrada válida, tabla de lexemas, árbol y traducción a JavaScript.
 
-### Entrada con error 1 (input3.txt)
-```
+
+### Entrada con error (input3.txt)
+
 do{
     puts("sol");
     break;
 }
-```
-**Error esperado:** `mismatched input '<EOF>' expecting 'while'`
 
-### Entrada con error 2 (input4.txt)
-```
+
+### Entrada con error (input4.txt)
+
 do{
     puts("hola");
 }while(0);
-```
-**Error esperado:** error sintáctico por falta del `break` obligatorio.
 
----
 
 ## Estructura del proyecto
 
 ```
-├── Calculator.g4                  # Gramática del sub-lenguaje C
-├── CustomCalculatorVisitor.js     # Visitor con la semántica del analizador
-├── index.js                       # Programa principal
-├── input.txt                      # Archivo de entrada actual
-├── input1.txt                     # Ejemplo válido 1
-├── input2.txt                     # Ejemplo válido 2
-├── input3.txt                     # Ejemplo con error 1
-├── input4.txt                     # Ejemplo con error 2
-├── generated/                     # Archivos generados por ANTLR4
+├── Calculator.g4                  
+├── CustomCalculatorVisitor.js     
+├── index.js                    
+├── input.txt                      
+├── input1.txt                     
+├── input2.txt                     
+├── input3.txt                     
+├── input4.txt                     
+├── generated/                     
 │   ├── CalculatorLexer.js
 │   ├── CalculatorParser.js
 │   ├── CalculatorListener.js
