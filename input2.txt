@@ -1,0 +1,5 @@
+do{
+    puts("sol");
+    puts("luna");
+    break;
+}while(1);

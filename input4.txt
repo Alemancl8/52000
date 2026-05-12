@@ -1,5 +1,3 @@
 do{
     puts("hola");
 }while(0);
-
-

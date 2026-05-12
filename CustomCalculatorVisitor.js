@@ -1,60 +1,89 @@
-import { Parser } from "antlr4";
-import CalculatorVisitor from "./generated/CalculatorVisitor.js";
-import CalculatorParser from "./generated/CalculatorParser.js";
+import CalculatorVisitor from './generated/CalculatorVisitor.js';
 
-export class CustomCalculatorVisitor extends CalculatorVisitor{
+export default class CustomCalculatorVisitor extends CalculatorVisitor {
 
     constructor() {
         super();
-        this.memory = new Map();   //Declaro una variable de instancia con una memoria temporal para hacer las reducciones
-    } 
-    
-    visitInt(ctx) {
-        //obtengo el lexema correspondiente al INT que reconocio en el texto y lo convierto a entero.
-        return parseInt(ctx.INT().getText());
+        this.tablaLexemas = [];
+        this.codigoJS = [];
+        this.indentacion = 0;
     }
 
-    visitPrintExpr(ctx) {
-        const value = this.visit(ctx.expr());
-        console.log(`\nResultado: ${value}`);
-        return this.visitChildren(ctx);
-      }
-
-
-    visitMulDiv(ctx) {
-        /* Las subexpresiones se visitaran recursivamente hasta ir obteniendo los valores correspondientes */
-        const left =  this.visit(ctx.expr(0));   //visito la subexpresion a la izquierda de la operacion
-        const right = this.visit(ctx.expr(1));  //visito la subexpresion a la derecha de la operacion. 
-        if (ctx.op.type==CalculatorParser.MUL)
-          return left * right;
-        else
-          return left / right;
-      }
-
-      visitAddSub(ctx) {
-        const left =  this.visit(ctx.expr(0));  
-        const right = this.visit(ctx.expr(1));  
-        if (ctx.op.type==CalculatorParser.ADD){
-          return left + right; }
-        else
-          return left - right;
-      }
-
-      visitParens(ctx) {
-        return this.visit(ctx.expr());
-      }
-
-      visitId(ctx) {
-        const id = ctx.ID().getText();
-        if (this.memory.has(id)) return this.memory.get(id);
-        return 0;
+    generarTablaLexemas(tokens, ruleNames, parser) {
+        console.log('\n=== TABLA DE LEXEMAS-TOKENS ===');
+        console.log('Lexema'.padEnd(20) + 'Token');
+        console.log('-'.repeat(40));
+        tokens.forEach(token => {
+            if (token.type === -1) return;
+            const nombreToken = parser.symbolicNames[token.type] || 'UNKNOWN';
+            const lexema = token.text;
+            this.tablaLexemas.push({ lexema, token: nombreToken });
+            console.log(lexema.padEnd(20) + nombreToken);
+        });
     }
 
-      visitAssign(ctx) {
-        const id = ctx.ID().getText();
-        const value = this.visit(ctx.expr());
-        this.memory.set(id, value);
-        return value;
+    mostrarArbol(tree, parser) {
+        console.log('\n=== ÁRBOL DE ANÁLISIS SINTÁCTICO ===');
+        console.log(tree.toStringTree(parser.ruleNames));
     }
-    
+
+    visitPrograma(ctx) {
+        console.log('\n=== INTERPRETACIÓN (Traducción a JavaScript) ===');
+        this.visitChildren(ctx);
+        const codigo = this.codigoJS.join('\n');
+        console.log(codigo);
+        console.log('\n=== EJECUTANDO CÓDIGO JAVASCRIPT GENERADO ===');
+        try {
+            eval(codigo);
+        } catch (e) {
+            console.error('Error al ejecutar: ' + e.message);
+        }
+    }
+
+    visitInstrucciones(ctx) { this.visitChildren(ctx); }
+    visitInstruccion(ctx) { this.visitChildren(ctx); }
+
+    visitBucle(ctx) {
+        const condicion = ctx.condicion().getText();
+        this.codigoJS.push('do {');
+        this.indentacion++;
+        this.visitSentencia(ctx.sentencia());
+        this.indentacion--;
+        this.codigoJS.push('} while (' + condicion + ');');
+    }
+
+    visitSentencia(ctx) {
+        if (ctx.terminar()) {
+            this.visitTerminar(ctx.terminar());
+        } else {
+            this.visitSalida(ctx.salida());
+            if (ctx.sentencia()) {
+                this.visitSentencia(ctx.sentencia());
+            }
+        }
+    }
+
+    visitSalida(ctx) {
+        const texto = this.obtenerTextoCadena(ctx.cadena());
+        const indent = '  '.repeat(this.indentacion);
+        this.codigoJS.push(indent + 'console.log("' + texto + '");');
+    }
+
+    visitTerminar(ctx) {
+        const indent = '  '.repeat(this.indentacion);
+        this.codigoJS.push(indent + 'break;');
+    }
+
+    obtenerTextoCadena(cadenaCtx) {
+        return this.obtenerTextoCar(cadenaCtx.caracteres());
+    }
+
+    obtenerTextoCar(caracteresCtx) {
+        let texto = '';
+        if (caracteresCtx.caracteres()) {
+            texto += this.obtenerTextoCar(caracteresCtx.caracteres());
+        }
+        texto += caracteresCtx.caracter().getText();
+        return texto;
+    }
 }
