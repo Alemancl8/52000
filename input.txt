@@ -1,5 +1,9 @@
 do{
     puts("hola");
+    puts("chau");
+    puts("bien");
+    break;
 }while(0);
+
 
 

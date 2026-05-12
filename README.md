@@ -66,7 +66,7 @@ do{
 
 ## Estructura del proyecto
 
-```
+
 ├── Calculator.g4                  
 ├── CustomCalculatorVisitor.js     
 ├── index.js                    
@@ -81,4 +81,4 @@ do{
 │   ├── CalculatorListener.js
 │   └── CalculatorVisitor.js
 └── README.md
-```
+
