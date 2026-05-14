@@ -29,8 +29,7 @@ npm install
 1. Escribir con "input.txt" (Ver abajo)
 2. Ejecutar el analizador:
 node index.js
-3. Si en el terminal no funciona la ejecucín, usar "Command Prompt" para el uso del mismo
-4. En "Command Prompt" usar npm start para que se ejcute el analizador
+3. Si en el terminal no funciona la ejecución, usar "Command Prompt" para el uso del mismo
 
 ### Ejemplos de entrada
 
